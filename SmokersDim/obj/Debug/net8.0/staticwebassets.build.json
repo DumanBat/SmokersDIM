@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "FlaWHeQAQ+dONb8ixt6n3URT4V+1gBK3XdojKt1AImc=",
+  "Source": "SmokersDim",
+  "BasePath": "_content/SmokersDim",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "SmokersDim\\wwwroot",
+      "Source": "SmokersDim",
+      "ContentRoot": "G:\\Backend\\SmokersDim\\wwwroot\\",
+      "BasePath": "_content/SmokersDim",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "G:\\Backend\\SmokersDim\\wwwroot\\index.html",
+      "SourceId": "SmokersDim",
+      "SourceType": "Discovered",
+      "ContentRoot": "G:\\Backend\\SmokersDim\\wwwroot\\",
+      "BasePath": "_content/SmokersDim",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ]
+}

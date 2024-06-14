@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destiny Character Info</title>
+    <script>
+        async function getCharacterInfo() {
+            const url = 'Platform/User/GetMembershipsForCurrentUser/';
+            const response = await fetch(`https://localhost:5099/api/proxy/${encodeURIComponent(url)}`);
+            const data = await response.json();
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+        async function login() {
+            async function getCharacterInfo() {
+                const url = 'Platform/User/GetMembershipsForCurrentUser/';
+                const response = await fetch(`https://localhost:5099/api/proxy/${encodeURIComponent(url)}`);
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Destiny Character Info</h1>
+    <input type="text" id="membershipType" placeholder="Membership Type">
+    <input type="text" id="destinyMembershipId" placeholder="Destiny Membership ID">
+    <input type="text" id="characterId" placeholder="Character ID">
+    <button onclick="getCharacterInfo()">Get Character Info</button>
+    <pre id="result"></pre>
+</body>
+
+</html>

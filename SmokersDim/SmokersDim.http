@@ -1,0 +1,6 @@
+@SmokersDim_HostAddress = http://localhost:5281
+
+GET {{SmokersDim_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
