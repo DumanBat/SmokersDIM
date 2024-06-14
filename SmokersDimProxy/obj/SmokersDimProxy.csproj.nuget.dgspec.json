@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Backend\\SmokersDimProxy\\SmokersDimProxy.csproj": {}
+    "G:\\Backend\\SmokersDIM\\SmokersDimProxy\\SmokersDimProxy.csproj": {}
   },
   "projects": {
-    "G:\\Backend\\SmokersDimProxy\\SmokersDimProxy.csproj": {
+    "G:\\Backend\\SmokersDIM\\SmokersDimProxy\\SmokersDimProxy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Backend\\SmokersDimProxy\\SmokersDimProxy.csproj",
+        "projectUniqueName": "G:\\Backend\\SmokersDIM\\SmokersDimProxy\\SmokersDimProxy.csproj",
         "projectName": "SmokersDimProxy",
-        "projectPath": "G:\\Backend\\SmokersDimProxy\\SmokersDimProxy.csproj",
+        "projectPath": "G:\\Backend\\SmokersDIM\\SmokersDimProxy\\SmokersDimProxy.csproj",
         "packagesPath": "C:\\Users\\kuand\\.nuget\\packages\\",
-        "outputPath": "G:\\Backend\\SmokersDimProxy\\obj\\",
+        "outputPath": "G:\\Backend\\SmokersDIM\\SmokersDimProxy\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -1926,11 +1926,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\Backend\\SmokersDim\\SmokersDim.csproj",
+      "projectUniqueName": "G:\\Backend\\SmokersDIM\\SmokersDim\\SmokersDim.csproj",
       "projectName": "SmokersDim",
-      "projectPath": "G:\\Backend\\SmokersDim\\SmokersDim.csproj",
+      "projectPath": "G:\\Backend\\SmokersDIM\\SmokersDim\\SmokersDim.csproj",
       "packagesPath": "C:\\Users\\kuand\\.nuget\\packages\\",
-      "outputPath": "G:\\Backend\\SmokersDim\\obj\\",
+      "outputPath": "G:\\Backend\\SmokersDIM\\SmokersDim\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

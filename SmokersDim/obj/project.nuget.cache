@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zRg86WJt+YQFSm5JMWKdTI9VSFxsqO4XxV1h5KXY8Cez1AY9y3Ln9HczkIcjnGMGUiU9cpUBKTWgv8Bng2zycQ==",
+  "dgSpecHash": "7lTvyEoSVBGqlpTD9izoUoVj5xd4Paz92+32mDScsQQ2TAWZbKBcN5fc9XbnP4VC6dsm6rM16tYYd/j6RTKnKA==",
   "success": true,
-  "projectFilePath": "G:\\Backend\\SmokersDim\\SmokersDim.csproj",
+  "projectFilePath": "G:\\Backend\\SmokersDIM\\SmokersDim\\SmokersDim.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

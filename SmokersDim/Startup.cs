@@ -32,7 +32,7 @@ public class Startup
         services.AddHttpsRedirection(options =>
         {
             options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-            options.HttpsPort = 5281; // Ensure this matches the HTTPS port in your launchSettings.json
+            options.HttpsPort = 5281;
         });
 
         services.AddAuthentication(options =>
