@@ -15,19 +15,28 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddControllers();
+
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy",
+            options.AddPolicy("AllowSpecificOrigin",
                 builder =>
                 {
                     builder.WithOrigins("https://localhost:5281")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowCredentials();
+                           .AllowCredentials(); // Allow credentials from the specified origins
                 });
         });
 
-        services.AddControllers();
+        // Add session support
+        services.AddDistributedMemoryCache();
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
 
         services.AddHttpsRedirection(options =>
         {
@@ -35,43 +44,11 @@ public class Startup
             options.HttpsPort = 5281;
         });
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = "Bungie";
-        })
-        .AddCookie()
-        .AddOAuth("Bungie", options =>
-        {
-            options.ClientId = Configuration["Bungie:ClientId"];
-            options.ClientSecret = Configuration["Bungie:ClientSecret"];
-            options.CallbackPath = new PathString("/signin-bungie");
-
-            options.AuthorizationEndpoint = "https://www.bungie.net/en/oauth/authorize";
-            options.TokenEndpoint = "https://www.bungie.net/platform/app/oauth/token/";
-
-            options.SaveTokens = true;
-
-            options.Events = new OAuthEvents
-            {
-                OnCreatingTicket = async context =>
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, "https://www.bungie.net/Platform/User/GetMembershipsForCurrentUser/");
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
-                    request.Headers.Add("X-API-Key", Configuration["Bungie:ApiKey"]);
-
-                    var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
-                    response.EnsureSuccessStatusCode();
-
-                    var user = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                    var userId = user.RootElement.GetProperty("Response").GetProperty("bungieNetUser").GetProperty("membershipId").GetString();
-
-                    context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId));
-                    context.Identity.AddClaim(new Claim(ClaimTypes.Name, userId));
-                },
-            };
-        });
+                    options.LoginPath = "/account/login";
+                });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -80,15 +57,18 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-        
-        app.UseCors("CorsPolicy");
-        //app.UseCors(builder => builder.AllowAnyOrigin());
 
         app.UseHttpsRedirection();
         app.UseRouting();
-        app.UseStaticFiles();
+        
+        // Apply the CORS policy to the app
+        app.UseCors("AllowSpecificOrigin");
+
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseSession();
+        app.UseStaticFiles();
 
         app.UseEndpoints(endpoints =>
         {
@@ -96,3 +76,4 @@ public class Startup
         });
     }
 }
+

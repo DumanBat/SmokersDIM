@@ -22,12 +22,16 @@ public class Startup
     {
         services.AddControllers();
         services.AddHttpClient();
+        
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy", builder =>
-            {
-                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-            });
+            options.AddPolicy("AllowSpecificOrigin",
+                builder =>
+                {
+                    builder.WithOrigins("https://localhost:5281")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
         });
 
         services.AddHttpsRedirection(options =>
@@ -82,7 +86,7 @@ public class Startup
         }
 
         app.UseRouting();
-        app.UseCors("CorsPolicy");
+        app.UseCors("AllowSpecificOrigin");
         app.UseAuthentication();
         app.UseAuthorization();
 

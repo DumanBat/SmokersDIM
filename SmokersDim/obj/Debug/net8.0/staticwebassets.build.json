@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "FlaWHeQAQ+dONb8ixt6n3URT4V+1gBK3XdojKt1AImc=",
+  "Hash": "YpslbLBSd00IMukdTJ1P8jyCFm7Fh0ad3oVBOzLDCIA=",
   "Source": "SmokersDim",
   "BasePath": "_content/SmokersDim",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "SmokersDim\\wwwroot",
       "Source": "SmokersDim",
-      "ContentRoot": "G:\\Backend\\SmokersDim\\wwwroot\\",
+      "ContentRoot": "G:\\Backend\\SmokersDIM\\SmokersDim\\wwwroot\\",
       "BasePath": "_content/SmokersDim",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "G:\\Backend\\SmokersDim\\wwwroot\\index.html",
+      "Identity": "G:\\Backend\\SmokersDIM\\SmokersDim\\wwwroot\\index.html",
       "SourceId": "SmokersDim",
       "SourceType": "Discovered",
-      "ContentRoot": "G:\\Backend\\SmokersDim\\wwwroot\\",
+      "ContentRoot": "G:\\Backend\\SmokersDIM\\SmokersDim\\wwwroot\\",
       "BasePath": "_content/SmokersDim",
       "RelativePath": "index.html",
       "AssetKind": "All",

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmokersDim")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1199b597f366f64150e704774dd2f8ff91e4e571")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e3bf03cd3b6128bc13b1f9abbb1d8309516d82b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmokersDim")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmokersDim")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
