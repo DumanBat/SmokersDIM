@@ -11,5 +11,9 @@
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddDebug();
                 });
     }

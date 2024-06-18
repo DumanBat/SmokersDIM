@@ -20,8 +20,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging();
         services.AddControllers();
         services.AddHttpClient();
+        services.AddSingleton<ITokenService, TokenService>();
         
         services.AddCors(options =>
         {
@@ -46,7 +48,6 @@ public class Startup
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = "Bungie";
         })
-        .AddCookie()
         .AddOAuth("Bungie", options =>
         {
             options.ClientId = Configuration["Bungie:ClientId"];
@@ -73,6 +74,9 @@ public class Startup
 
                     context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId));
                     context.Identity.AddClaim(new Claim(ClaimTypes.Name, userId));
+
+                    var tokenService = context.HttpContext.RequestServices.GetRequiredService<ITokenService>();
+                    tokenService.AccessToken = context.AccessToken;
                 }
             };
         });

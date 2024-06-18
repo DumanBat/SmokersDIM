@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destiny Character Info</title>
     <script>
-        async function getCharacterInfo() {
+        async function getEquipment() {
             try {
-                const response = await fetch(`/account/character`, {
-                    credentials: 'include'
-                });
+                const response = await fetch('/auth/get-equipment');
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('result').textContent = JSON.stringify(data, null, 2);
                 } else {
-                    console.error('Error fetching character info:', response.statusText);
+                    console.error('Error fetching equipment info:', response.statusText);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -32,7 +30,7 @@
 <body>
     <h1>Destiny Character Info</h1>
     <button onclick="login()">Login</button>
-    <button onclick="getCharacterInfo()">Get Character Info</button>
+    <button onclick="getEquipment()">Get Equipment Info</button>
     <pre id="result"></pre>
 </body>
 </html>

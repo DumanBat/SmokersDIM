@@ -15,6 +15,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging();
         services.AddControllers();
 
         services.AddCors(options =>

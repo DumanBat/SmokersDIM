@@ -13,4 +13,10 @@ public class AccountController : Controller
     {
         return Redirect("https://localhost:5099/api/proxy/character");
     }
+
+    [HttpGet("account/equipment")]
+    public IActionResult Equipment()
+    {
+        return Redirect("https://localhost:5099/api/proxy/equipment");
+    }
 }
