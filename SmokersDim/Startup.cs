@@ -13,6 +13,7 @@ public class Startup
     {
         services.AddLogging();
         services.AddHttpClient();
+        services.AddTransient<IBungieApiService, BungieApiService>();
         services.AddControllers();
 
         services.AddCors(options =>
