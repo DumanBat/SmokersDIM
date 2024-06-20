@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging; // Add logging namespace
+using Microsoft.Extensions.Logging;
 
 public class AccountController : Controller
 {
@@ -113,7 +113,6 @@ public class AccountController : Controller
         var url = $"{_baseUrl}/User/GetMembershipsForCurrentUser/";
         _logger.LogInformation("Requesting Membership Info from URL: {Url}", url);
 
-        //var response = await SendRequestAsync(url);
         var response = await SendRequestAsync(url);
         if (response is ObjectResult objectResult && objectResult.StatusCode != 200)
         {
@@ -128,7 +127,6 @@ public class AccountController : Controller
         var url = $"{_baseUrl}/Destiny2/{membershipType}/Profile/{membershipId}/?components=200";
         _logger.LogInformation("Requesting Profile Info from URL: {Url}", url);
 
-        //return await SendRequestAsync(url);
         return await SendRequestAsync(url);
     }
 
@@ -137,7 +135,6 @@ public class AccountController : Controller
         var url = $"{_baseUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Character/{characterId}/?components=205";
         _logger.LogInformation("Requesting Equipment Info from URL: {Url}", url);
 
-        //return await SendRequestAsync(url);
         return await SendRequestAsync(url);
     }
 
@@ -145,7 +142,6 @@ public class AccountController : Controller
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, _proxyUrl);
         requestMessage.Headers.Add("MainApp-Url", url);
-        //requestMessage.Headers.Add("X-API-Key", _apiKey);
 
         var response = await _httpClient.SendAsync(requestMessage);
         if (!response.IsSuccessStatusCode)

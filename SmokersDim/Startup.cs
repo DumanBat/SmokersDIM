@@ -1,8 +1,4 @@
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
 public class Startup
 {
@@ -27,11 +23,10 @@ public class Startup
                     builder.WithOrigins("https://localhost:5281")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowCredentials(); // Allow credentials from the specified origins
+                           .AllowCredentials();
                 });
         });
 
-        // Add session support
         services.AddDistributedMemoryCache();
         services.AddSession(options =>
         {
@@ -59,12 +54,10 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-
         
         app.UseHttpsRedirection();
         app.UseRouting();
         
-        // Apply the CORS policy to the app
         app.UseCors("AllowSpecificOrigin");
 
         app.UseAuthentication();
@@ -76,6 +69,16 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+        });
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.Path == "/")
+            {
+                context.Response.Redirect("/index.html");
+                return;
+            }
+
+            await next();
         });
     }
 }

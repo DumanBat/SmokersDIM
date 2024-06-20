@@ -1,26 +1,7 @@
-// using Microsoft.AspNetCore.Authentication;
-// using Microsoft.AspNetCore.Mvc;
 
-// public class ProxyController: Controller
-// {
-
-//     [HttpGet("api/proxy/login")]
-//     public IActionResult Login()
-//     {
-//         var authenticationProperties = new AuthenticationProperties
-//         {
-//             RedirectUri = "https://localhost:5281/api/auth/authcallback"
-//         };
-//         return Challenge(authenticationProperties, "Bungie");
-//     }
-// }
-using AspNetCore.Proxy.Builders;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 public class ProxyController : Controller
 {
@@ -40,10 +21,7 @@ public class ProxyController : Controller
     [HttpGet("api/proxy/login")]
     public IActionResult Login()
     {
-        var authenticationProperties = new AuthenticationProperties
-        {
-            RedirectUri = "https://localhost:5281/api/auth/authcallback"
-        };
+        var authenticationProperties = new AuthenticationProperties();
         return Challenge(authenticationProperties, "Bungie");
     }
 
@@ -63,8 +41,9 @@ public class ProxyController : Controller
         if (!string.IsNullOrEmpty(_tokenService.AccessToken))
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenService.AccessToken);
-            request.Headers.Add("X-API-Key", _configuration["Bungie:ApiKey"]);
         }
+        
+            request.Headers.Add("X-API-Key", _configuration["Bungie:ApiKey"]);
 
         var response = await httpClient.SendAsync(request);
         var responseContent = await response.Content.ReadAsStringAsync();
