@@ -31,13 +31,21 @@ public class Startup
                 });
         });
 
+        services.AddDistributedMemoryCache();
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         services.AddHttpsRedirection(options =>
         {
             options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
             options.HttpsPort = 5099;
         });
 
-        services.AddAuthentication(options =>
+        _ = services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -74,7 +82,8 @@ public class Startup
                     tokenService.AccessToken = context.AccessToken;
                 }
             };
-        });
+        })
+        .AddCookie();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -90,9 +99,21 @@ public class Startup
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseSession();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+        });
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.Path == "/")
+            {
+                context.Response.Redirect("https://localhost:5281/index.html");
+                return;
+            }
+
+            await next();
         });
     }
 }

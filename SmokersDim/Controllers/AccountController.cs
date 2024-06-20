@@ -44,85 +44,65 @@ public class AccountController : Controller
 
     private async Task<IActionResult> SetDataAsync()
     {
-        var membershipInfoResult = await GetMembershipInfo();
-        if (membershipInfoResult is ObjectResult membershipInfoObject)
+        var membershipInfo = await GetMembershipInfo();
+        try
         {
-            if (membershipInfoObject.StatusCode == 200)
-            {
-                try
-                {
-                    var membershipInfo = membershipInfoObject.Value.ToString();
-                    if (string.IsNullOrEmpty(membershipInfo))
-                    {
-                        _logger.LogError("membershipInfo == null");
-                    }
-                    
-                    _logger.LogWarning(membershipInfo);
-                    var userData = JsonDocument.Parse(membershipInfo);
-                    var destinyMemberships = userData.RootElement.GetProperty("Response").GetProperty("destinyMemberships").EnumerateArray().FirstOrDefault();
+            if (IsEmptyString(ref membershipInfo, out var membershipInfoMessage))
+                return StatusCode(500, membershipInfoMessage);
 
-                    if (destinyMemberships.ValueKind != JsonValueKind.Undefined)
-                    {
-                        var membershipId = destinyMemberships.GetProperty("membershipId").GetString();
-                        var membershipType = destinyMemberships.GetProperty("membershipType").GetString();
+            var userData = JsonDocument.Parse(membershipInfo);
+            var destinyMemberships = userData.RootElement.GetProperty("Response").GetProperty("destinyMemberships").EnumerateArray().FirstOrDefault();
 
-                        var profileInfoResult = await GetProfile(membershipType, membershipId);
-                        if (profileInfoResult is ObjectResult profileInfoObject && profileInfoObject.StatusCode == 200)
-                        {
-                            var profileInfo = profileInfoObject.Value.ToString();
-                            var profileData = JsonDocument.Parse(profileInfo);
-                            var characters = profileData.RootElement.GetProperty("Response").GetProperty("characters").GetProperty("data").EnumerateArray().FirstOrDefault();
+            if (IsJsonValueKindUndefined(ref destinyMemberships, out var destinyMembershipsMessage))
+                return StatusCode(500, destinyMembershipsMessage);
+            
+            var membershipId = destinyMemberships.GetProperty("membershipId").GetString();
+            var membershipType = destinyMemberships.GetProperty("membershipType").GetInt32().ToString();
 
-                            if (characters.ValueKind != JsonValueKind.Undefined)
-                            {
-                                var characterId = characters.GetProperty("characterId").ToString();
-                                var equipmentInfoResult = await GetEquipment(membershipType, membershipId, characterId);
+            var profileInfoResult = await GetProfile(membershipType, membershipId);
+            if (IsEmptyString(ref profileInfoResult, out var profileEInfoMessage))
+                return StatusCode(500, profileEInfoMessage);
+            
+            var profileInfo = profileInfoResult;
+            var profileData = JsonDocument.Parse(profileInfo);
+            var character = profileData.RootElement.GetProperty("Response").GetProperty("characters").GetProperty("data").EnumerateObject().FirstOrDefault().Value;
 
-                                if (equipmentInfoResult is ObjectResult equipmentInfoObject && equipmentInfoObject.StatusCode == 200)
-                                {
-                                    var equipmentInfo = equipmentInfoObject.Value.ToString();
-                                    _equipmentData = JsonDocument.Parse(equipmentInfo).ToString();
-                                    return StatusCode(200, "finished");
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (JsonException jsonEx)
-                {
-                    _logger.LogError(jsonEx, "Error parsing JSON response.");
-                    return StatusCode(500, "Error parsing JSON response.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "An unexpected error occurred.");
-                    return StatusCode(500, "An unexpected error occurred.");
-                }
-            }
-            else
-            {
-                _logger.LogError("Error fetching SHIT: {StatusCode} {ReasonPhrase}", membershipInfoObject.StatusCode, membershipInfoObject.Value);
-                return StatusCode((int)membershipInfoObject.StatusCode, membershipInfoObject.Value);
-            }
+            if (IsJsonValueKindUndefined(ref character, out var characterMessage))
+                return StatusCode(500, characterMessage);
+            
+            var characterId = character.GetProperty("characterId").ToString();
+            var equipmentInfoResult = await GetEquipment(membershipType, membershipId, characterId);
+
+            if (IsEmptyString(ref equipmentInfoResult, out var equipmentInfoMessage))
+                return StatusCode(500, equipmentInfoMessage);
+
+            var equipmentInfo = equipmentInfoResult;
+            _equipmentData = JsonDocument.Parse(equipmentInfo).ToString();
+            return Content(equipmentInfoResult, "application/json");
         }
-        return StatusCode(401, "Unauthorized or Invalid Response");
+        catch (JsonException jsonEx)
+        {
+            _logger.LogError(jsonEx, "Error parsing JSON response.");
+            return StatusCode(500, "Error parsing JSON response.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unexpected error occurred.");
+            return StatusCode(500, "An unexpected error occurred.");
+        }
     }
 
-    private async Task<IActionResult> GetMembershipInfo()
+    private async Task<string> GetMembershipInfo()
     {
         var url = $"{_baseUrl}/User/GetMembershipsForCurrentUser/";
         _logger.LogInformation("Requesting Membership Info from URL: {Url}", url);
 
         var response = await SendRequestAsync(url);
-        if (response is ObjectResult objectResult && objectResult.StatusCode != 200)
-        {
-            _logger.LogError("Error fetching membership data: {StatusCode} {ReasonPhrase}", objectResult.StatusCode, objectResult.Value);
-        }
 
-        return response;
+        return response.ToString();
     }
 
-    private async Task<IActionResult> GetProfile(string membershipType, string membershipId)
+    private async Task<string> GetProfile(string membershipType, string membershipId)
     {
         var url = $"{_baseUrl}/Destiny2/{membershipType}/Profile/{membershipId}/?components=200";
         _logger.LogInformation("Requesting Profile Info from URL: {Url}", url);
@@ -130,7 +110,7 @@ public class AccountController : Controller
         return await SendRequestAsync(url);
     }
 
-    private async Task<IActionResult> GetEquipment(string membershipType, string membershipId, string characterId)
+    private async Task<string> GetEquipment(string membershipType, string membershipId, string characterId)
     {
         var url = $"{_baseUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Character/{characterId}/?components=205";
         _logger.LogInformation("Requesting Equipment Info from URL: {Url}", url);
@@ -138,7 +118,7 @@ public class AccountController : Controller
         return await SendRequestAsync(url);
     }
 
-    private async Task<IActionResult> SendRequestAsync(string url)
+    private async Task<string> SendRequestAsync(string url)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, _proxyUrl);
         requestMessage.Headers.Add("MainApp-Url", url);
@@ -147,12 +127,31 @@ public class AccountController : Controller
         if (!response.IsSuccessStatusCode)
         {
             _logger.LogError("Request failed: {StatusCode} {ReasonPhrase} \n RequestUrl: {requestUrl}", response.StatusCode, response.ReasonPhrase, url);
-            return StatusCode((int)response.StatusCode, "Request failed");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogInformation("Received Response: {Response}", responseContent);
+        return responseContent;
+    }
 
-        return Content(responseContent);
+    private bool IsEmptyString(ref string value, out string message)
+    {
+        var isEmpty = string.IsNullOrEmpty(value);
+        message = $"{nameof(value)} is null or empty";
+
+        if (isEmpty)
+            _logger.LogError(message);
+
+        return isEmpty;
+    }
+    
+    private bool IsJsonValueKindUndefined(ref JsonElement value, out string message)
+    {
+        var isEmpty = value.ValueKind == JsonValueKind.Undefined;
+        message = $"{nameof(value)} is undefined";
+
+        if (isEmpty)
+            _logger.LogError(message);
+
+        return isEmpty;
     }
 }
