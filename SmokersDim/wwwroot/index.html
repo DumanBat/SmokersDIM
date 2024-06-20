@@ -7,10 +7,30 @@
     <script>
         async function getEquipment() {
             try {
-                const response = await fetch('/auth/get-equipment');
+                const response = await fetch('/api/auth/get-equipment', {
+                    method: 'GET',
+                    credentials: 'include' // This ensures cookies are sent with the request
+                });
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                } else {
+                    console.error('Error fetching equipment info:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        async function loadEquipment() {
+            try {
+                const response = await fetch('/account/equipment', {
+                    method: 'GET',
+                    //credentials: 'include' // This ensures cookies are sent with the request
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                    
                 } else {
                     console.error('Error fetching equipment info:', response.statusText);
                 }
@@ -25,11 +45,21 @@
                 console.error('Error during login:', error);
             }
         }
+        async function display() {
+            try {
+                const response = await fetch('/account/equipment', {
+                    method: 'GET',
+                })
+            } catch (error) {
+                console.error('Error during test:', error);
+            }
+        }
     </script>
 </head>
 <body>
     <h1>Destiny Character Info</h1>
     <button onclick="login()">Login</button>
+    <button onclick="loadEquipment()">Load Equipment Info</button>
     <button onclick="getEquipment()">Get Equipment Info</button>
     <pre id="result"></pre>
 </body>

@@ -16,6 +16,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddLogging();
+        services.AddHttpClient();
         services.AddControllers();
 
         services.AddCors(options =>
@@ -59,6 +60,7 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
+        
         app.UseHttpsRedirection();
         app.UseRouting();
         

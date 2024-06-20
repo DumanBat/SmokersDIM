@@ -5,18 +5,21 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-[Route("[controller]/[action]")]
+[Route("api/[controller]")]
 public class AuthController : Controller
 {
     private static JsonElement? _latestEquipmentData;
     private ILogger<AuthController> _logger;
+
+    private string testValue;
+    
 
     public AuthController(ILogger<AuthController> logger)
     {
         _logger = logger;
     }
 
-    [HttpGet]
+    [HttpGet("authcallback")]
     public async Task<IActionResult> Callback()
     {
         var authenticateResult = await HttpContext.AuthenticateAsync("Bungie");
@@ -42,19 +45,29 @@ public class AuthController : Controller
         // var httpClient = new HttpClient();
         
         // var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:5099/api/proxy/equipment");
-        // await httpClient.SendAsync(requestMessage);
-         var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync("https://localhost:5099/api/proxy/equipment");
+        // await httpClient.SendAsync(requestMessage);        
+        
+        // var httpClient = new HttpClient();
+        // var response = await httpClient.GetAsync("https://localhost:5099/api/proxy/equipment");
 
-        if (response.IsSuccessStatusCode)
-        {
-            _logger.LogInformation("successsssss");
-            var equipmentData = await response.Content.ReadAsStringAsync();
-            var parsedEquipmentData = JsonDocument.Parse(equipmentData).RootElement;
-            await ReceiveEquipment(parsedEquipmentData);
-        }
-            _logger.LogInformation("hzzzzzzzz");
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     _logger.LogInformation("successsssss");
+        //     var equipmentData = await response.Content.ReadAsStringAsync();
+        //     var parsedEquipmentData = JsonDocument.Parse(equipmentData).RootElement;
+        //     await ReceiveEquipment(parsedEquipmentData);
+
+        //     var filePath = Path.Combine("G:\\Backend\\test", "characterInfo.json");
+        //     await System.IO.File.WriteAllTextAsync(filePath, equipmentData);
+        // }
+        //     _logger.LogInformation("hzzzzzzzz");
         return Redirect("/");
+    }
+
+    [HttpGet("equipment-callback")]
+    public async Task<IActionResult> EquipmentCallback()
+    {
+        return Ok();
     }
 
     [HttpPost("receive-equipment")]
@@ -64,8 +77,17 @@ public class AuthController : Controller
         return Ok();
     }
 
+    [HttpPost("receive-equipment-test")]
+    public async Task<IActionResult> ReceiveEquipmentTest(StringContent equipmentData)
+    {
+        testValue = equipmentData.ToString();
+        var filePath = Path.Combine("G:\\Backend\\test", "test.txt");
+        await System.IO.File.WriteAllTextAsync(filePath, testValue);
+        return Ok();
+    }
+
     [HttpGet("get-equipment")]
-    public IActionResult GetEquipment()
+    public async Task<IActionResult> GetEquipment()
     {
         if (_latestEquipmentData == null)
         {
