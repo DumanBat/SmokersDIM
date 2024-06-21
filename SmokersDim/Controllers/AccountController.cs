@@ -1,24 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 [ApiController]
 [Route("[controller]")]
 public class AccountController : ControllerBase
 {
-    private const string EQUIPMENT_DATA_CACHE_KEY = "EquipmentData";
-    private readonly IBungieApiService _bungieApiService;
+    private readonly IEquipmentService _equipmentService;
     private readonly ILogger<AccountController> _logger;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AccountController(IBungieApiService bungieApiService, ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor)
+    public AccountController(IEquipmentService equipmentService, ILogger<AccountController> logger)
     {
-        _bungieApiService = bungieApiService ?? throw new ArgumentNullException(nameof(bungieApiService));
+        _equipmentService = equipmentService ?? throw new ArgumentNullException(nameof(equipmentService));
         _logger = logger;
-        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet("login")]
@@ -30,71 +25,30 @@ public class AccountController : ControllerBase
     [HttpGet("auth-callback")]
     public async Task<IActionResult> AuthCallback()
     {
-        await SetEquipmentDataAsync();
-        return Redirect(UrlConstants.AuthCallbackRedirectUrl);
+        try
+        {
+            await _equipmentService.SetEquipmentDataAsync();
+            return Redirect(UrlConstants.AuthCallbackRedirectUrl);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to set equipment data");
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpGet("show-equipment")]
-    public async Task<IActionResult> ShowEquipment()
+    public IActionResult ShowEquipment()
     {
-        var session = _httpContextAccessor.HttpContext.Session;
-        var equipmentData = session.GetString(EQUIPMENT_DATA_CACHE_KEY);
+        var session = HttpContext.Session;
+        var equipmentData = session.GetString(EquipmentService.EQUIPMENT_DATA_CACHE_KEY);
 
         if (!string.IsNullOrEmpty(equipmentData))
             return Content(equipmentData, AppConstants.JsonContentType);        
         else
         {
-            _logger.LogError($"{EQUIPMENT_DATA_CACHE_KEY} is empty");
-            return StatusCode(500, $"{EQUIPMENT_DATA_CACHE_KEY} is empty");
+            _logger.LogError($"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
+            return StatusCode(500, $"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
         }
-    }
-
-    private async Task<IActionResult> SetEquipmentDataAsync()
-    {
-        var session = _httpContextAccessor.HttpContext.Session;
-
-        var membershipInfo = await _bungieApiService.GetMembershipInfo();
-        if (ValidationHelpers.IsEmptyString(membershipInfo, out var membershipInfoMessage))
-        {
-            _logger.LogError(membershipInfoMessage);
-            return StatusCode(500, membershipInfoMessage);
-        }
-
-        var userData = JsonDocument.Parse(membershipInfo);
-        var destinyMemberships = userData.RootElement.GetProperty("Response").GetProperty("destinyMemberships").EnumerateArray().FirstOrDefault();
-        if (ValidationHelpers.IsJsonValueKindUndefined(destinyMemberships, out var destinyMembershipsMessage))
-        {
-            _logger.LogError(destinyMembershipsMessage);
-            return StatusCode(500, destinyMembershipsMessage);
-        }
-
-        var membershipId = destinyMemberships.GetProperty("membershipId").GetString();
-        var membershipType = destinyMemberships.GetProperty("membershipType").GetInt32().ToString();
-
-        var profileInfo = await _bungieApiService.GetProfile(membershipType, membershipId);
-        if (ValidationHelpers.IsEmptyString(profileInfo, out var profileInfoMessage))
-        {
-            _logger.LogError(profileInfoMessage);
-            return StatusCode(500, profileInfoMessage);
-        }
-
-        var profileData = JsonDocument.Parse(profileInfo);
-        var character = profileData.RootElement.GetProperty("Response").GetProperty("characters").GetProperty("data").EnumerateObject().FirstOrDefault().Value;
-        if (ValidationHelpers.IsJsonValueKindUndefined(character, out var characterMessage))
-        {
-            _logger.LogError(characterMessage);
-            return StatusCode(500, characterMessage);
-        }
-
-        var characterId = character.GetProperty("characterId").ToString();
-        var equipmentInfo = await _bungieApiService.GetEquipment(membershipType, membershipId, characterId);
-        if (ValidationHelpers.IsEmptyString(equipmentInfo, out var equipmentInfoMessage))
-        {
-            _logger.LogError(equipmentInfoMessage);
-            return StatusCode(500, equipmentInfoMessage);
-        }
-        
-        session.SetString(EQUIPMENT_DATA_CACHE_KEY, equipmentInfo);
-        return Content(equipmentInfo, AppConstants.JsonContentType);
     }
 }

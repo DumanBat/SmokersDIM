@@ -14,6 +14,7 @@ public class Startup
         services.AddLogging();
         services.AddHttpClient();
         services.AddTransient<IBungieApiService, BungieApiService>();
+        services.AddTransient<IEquipmentService, EquipmentService>();
         services.AddControllers();
 
         services.AddCors(options =>
