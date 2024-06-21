@@ -24,7 +24,7 @@ public class ProxyController : Controller
     {
         var authenticationProperties = new AuthenticationProperties()
         {
-            RedirectUri = "https://localhost:5281/index.html"
+            RedirectUri = UrlConstants.LoginRedirectUrl
         };
         return Challenge(authenticationProperties, "Bungie");
     }
@@ -38,7 +38,7 @@ public class ProxyController : Controller
             return StatusCode(401, "SHIET!!! Authentication failed.");
         }
 
-        return Redirect("https://localhost:5281/index.html");
+        return Redirect(UrlConstants.MainAppHome);
     }
     
     [HttpGet("api/proxy/data")]

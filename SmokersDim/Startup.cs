@@ -35,6 +35,7 @@ public class Startup
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });
+        services.AddHttpContextAccessor();
 
         services.AddHttpsRedirection(options =>
         {

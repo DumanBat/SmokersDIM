@@ -25,7 +25,7 @@ public class Startup
             options.AddPolicy("AllowSpecificOrigin",
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:5281")
+                    builder.WithOrigins(UrlConstants.MainAppOrigin)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -57,15 +57,15 @@ public class Startup
             options.ClientSecret = Configuration["Bungie:ClientSecret"];
             options.CallbackPath = new PathString("/signin-bungie");
 
-            options.AuthorizationEndpoint = "https://www.bungie.net/en/oauth/authorize";
-            options.TokenEndpoint = "https://www.bungie.net/platform/app/oauth/token/";
+            options.AuthorizationEndpoint = UrlConstants.BungieAuthorizationEndpoint;
+            options.TokenEndpoint = UrlConstants.BungieTokenEndpoint;;
             options.SaveTokens = true;
 
             options.Events = new OAuthEvents
             {
                 OnCreatingTicket = async context =>
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, "https://www.bungie.net/Platform/User/GetMembershipsForCurrentUser/");
+                    var request = new HttpRequestMessage(HttpMethod.Get, UrlConstants.BungieGetMembershipsForCurrentUser);
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
                     request.Headers.Add("X-API-Key", Configuration["Bungie:ApiKey"]);
 
@@ -109,7 +109,7 @@ public class Startup
         {
             if (context.Request.Path == "/")
             {
-                context.Response.Redirect("https://localhost:5281/index.html");
+                context.Response.Redirect(UrlConstants.MainAppHome);
                 return;
             }
 
