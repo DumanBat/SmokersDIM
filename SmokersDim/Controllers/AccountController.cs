@@ -17,13 +17,15 @@ public class AccountController : ControllerBase
 	public const string CHARACTER_IDS_CACHE_KEY = "CharactersIDsArray";
 	private readonly IBungieApiService _bungieApiService;
 	private readonly IEquipmentService _equipmentService;
+	private readonly IDestinyManifectService _manifestService;
 	private readonly ILogger<AccountController> _logger;
 	private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-	public AccountController(IBungieApiService bungieApiService, IEquipmentService equipmentService, ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor)
+	public AccountController(IBungieApiService bungieApiService, IEquipmentService equipmentService, IDestinyManifectService destinyManifectService, ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor)
 	{
 		_bungieApiService = bungieApiService;
+		_manifestService = destinyManifectService;
 		_httpContextAccessor = httpContextAccessor;
 		_equipmentService = equipmentService ?? throw new ArgumentNullException(nameof(equipmentService));
 		_logger = logger;
@@ -45,10 +47,10 @@ public class AccountController : ControllerBase
 			var session = _httpContextAccessor.HttpContext.Session;
 			var membershipType = session.GetString(MEMBERSHIP_TYPE_CACHE_KEY);
 			var membershipId = session.GetString(MEMBERSHIP_ID_CACHE_KEY);
-			var characterIds = session.GetString(CHARACTER_IDS_CACHE_KEY);
-			
+			var characterIds = session.GetString(CHARACTER_IDS_CACHE_KEY);			
 			
 			await _equipmentService.SetEquipmentDataAsync(membershipType, membershipId, characterIds);
+			await _manifestService.SetDestinyManifestAsync();
 			return Redirect(UrlConstants.AuthCallbackRedirectUrl);
 		}
 		catch (Exception ex)
@@ -70,6 +72,21 @@ public class AccountController : ControllerBase
 		{
 			_logger.LogError($"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
 			return StatusCode(500, $"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
+		}
+	}
+	
+	[HttpGet("show-item-manifest")]
+	public IActionResult ShowItemManifest()
+	{
+		var session = _httpContextAccessor.HttpContext.Session;
+		var itemManifest = session.GetString(DestinyManifectService.ITEM_MANIFEST_CACHE_KEY);
+
+		if (!string.IsNullOrEmpty(itemManifest))
+			return Content(itemManifest, AppConstants.JsonContentType);        
+		else
+		{
+			_logger.LogError($"{DestinyManifectService.ITEM_MANIFEST_CACHE_KEY} is empty");
+			return StatusCode(500, $"{DestinyManifectService.ITEM_MANIFEST_CACHE_KEY} is empty");
 		}
 	}
 	

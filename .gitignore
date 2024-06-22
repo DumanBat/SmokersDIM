@@ -2,3 +2,6 @@
 */appsettings.Development.json
 Proxy/bin/
 SmokersDim/bin/
+
+*/DestinyInventoryItemDefinition.json
+SmokersDim/ManifestData/DestinyInventoryItemDefinition.json

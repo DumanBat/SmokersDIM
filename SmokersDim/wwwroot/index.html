@@ -21,6 +21,22 @@
                 console.error('Error:', error);
             }
         }
+        async function showItemManifest() {
+            try {
+                const response = await fetch('/account/show-item-manifest', {
+                    method: 'GET',
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                    
+                } else {
+                    console.error('Error fetching and showing item manifest:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
         async function login() {
             try {
                 window.location.href = '/account/login';
@@ -34,6 +50,7 @@
     <h1>Destiny Character Info</h1>
     <button onclick="login()">Login</button>
     <button onclick="showEquipment()">Show Equipment Info</button>
+    <button onclick="showItemManifest()">Show Item Manifest</button>
     <pre id="result"></pre>
 </body>
 </html>
