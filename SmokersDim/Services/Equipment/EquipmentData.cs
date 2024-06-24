@@ -10,11 +10,11 @@ public class EquipmentDatas
  public class EquipmentData
 {
 	public string characterId { get; set; }
-	public List<Item> items { get; set; }
+	public List<EquipmentItem> items { get; set; }
 }
 
  [Serializable]
-public class Item
+public class EquipmentItem
 {
 	public string itemHash { get; set; }
 	public string itemInstanceId { get; set; }

@@ -42,11 +42,11 @@ public class EquipmentService : IEquipmentService
 			}
 			var equipmentJson = JsonDocument.Parse(equipmentInfo);
 			var itemsJson = equipmentJson.RootElement.GetProperty("Response").GetProperty("equipment").GetProperty("data").GetProperty("items").EnumerateArray();
-			var items = new List<Item>();
+			var items = new List<EquipmentItem>();
 			
 			foreach (var itemJson in itemsJson)
 			{
-				var item = new Item();
+				var item = new EquipmentItem();
 
 				if (itemJson.TryGetProperty("itemHash", out var itemHash))
 					item.itemHash = itemHash.ToString();
