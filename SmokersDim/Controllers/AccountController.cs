@@ -50,7 +50,7 @@ public class AccountController : ControllerBase
 			var characterIds = session.GetString(CHARACTER_IDS_CACHE_KEY);			
 			
 			await _equipmentService.SetEquipmentDataAsync(membershipType, membershipId, characterIds);
-			//await _manifestService.SetDestinyManifestAsync();
+			await _manifestService.SetDestinyManifestAsync();
 			return Redirect(UrlConstants.AuthCallbackRedirectUrl);
 		}
 		catch (Exception ex)

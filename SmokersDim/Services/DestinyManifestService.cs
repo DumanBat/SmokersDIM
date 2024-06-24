@@ -52,15 +52,11 @@ public class DestinyManifectService : IDestinyManifectService
 		}
 		
 		var itemManifestUrl = manifestsCollection.GetProperty(AppConstants.DestinyInventoryItemDefinition).ToString();		
-		
-		var itemManifest = await _bungieApiService.GetSpecifiedManifest(itemManifestUrl);
-		
-		var path = $"{AppConstants.ManifestDataFolder}/{AppConstants.DestinyInventoryItemDefinition}.json";
-		await WriteStringToJsonFileAsync(itemManifest, path);
+		var itemManifest = await _bungieApiService.GetSpecifiedManifest(itemManifestUrl);		
 		
 		var items = JsonSerializer.Deserialize<Dictionary<string, Item>>(itemManifest);
 				
-		if (items.Count == 0)
+		if (items?.Count == 0)
 		{
 			_logger.LogWarning("Cannot get items Count");
 			return "Cannot get items Count";
@@ -71,10 +67,11 @@ public class DestinyManifectService : IDestinyManifectService
 		
 		foreach (var item in items)
 		{
-			//item.Value.Hash = item.Key;
-			_dbContext.Items.Add(item.Value);
+			newRoot.Items.Add(item.Key, item.Value);
 		}
-
+		
+		var path = $"{AppConstants.ManifestDataFolder}/{AppConstants.DestinyInventoryItemDefinition}.json";
+		await WriteRootObjectToJsonFileAsync(newRoot, path);
 		//await _dbContext.SaveChangesAsync();
 
 		return "Manifest successfully updated";
@@ -103,6 +100,23 @@ public class DestinyManifectService : IDestinyManifectService
 			using (FileStream createStream = File.Create(filePath))
 			{
 				await JsonSerializer.SerializeAsync(createStream, jsonString);
+			}
+
+			_logger.LogInformation("JSON data written to file successfully.");
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError($"Error writing JSON to file: {ex.Message}");
+		}
+	}
+	
+	private async Task WriteRootObjectToJsonFileAsync(RootObject rootObject, string filePath)
+	{
+		try
+		{
+			using (FileStream createStream = File.Create(filePath))
+			{
+				await JsonSerializer.SerializeAsync(createStream, rootObject);
 			}
 
 			_logger.LogInformation("JSON data written to file successfully.");
