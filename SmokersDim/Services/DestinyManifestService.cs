@@ -1,14 +1,9 @@
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Text.Unicode;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 public interface IDestinyManifectService
 {
-	Task<string> SetDestinyManifestAsync();
+	Task<string> UpdateInventoryItemsManifestAsync();
 }
 
 public class DestinyManifectService : IDestinyManifectService
@@ -27,7 +22,7 @@ public class DestinyManifectService : IDestinyManifectService
 		_dbContext = destinyDbContext;
 	}
 	
-	public async Task<string> SetDestinyManifestAsync()
+	public async Task<string> UpdateInventoryItemsManifestAsync()
 	{
 		var session = _httpContextAccessor.HttpContext.Session;		
 		var manifest = await _bungieApiService.GetManifest();
@@ -52,54 +47,77 @@ public class DestinyManifectService : IDestinyManifectService
 		}
 		
 		var itemManifestUrl = manifestsCollection.GetProperty(AppConstants.DestinyInventoryItemDefinition).ToString();		
-		var itemManifest = await _bungieApiService.GetSpecifiedManifest(itemManifestUrl);		
+		var itemManifest = await _bungieApiService.GetSpecifiedManifest(itemManifestUrl);
 		
-		var items = JsonSerializer.Deserialize<Dictionary<string, Item>>(itemManifest);
-				
-		if (items?.Count == 0)
+		Dictionary<string, Item> items = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Item>>(itemManifest);
+		var rootObject = new InventoryItemsRootObject();
+		foreach (var itemPair in items)
 		{
-			_logger.LogWarning("Cannot get items Count");
-			return "Cannot get items Count";
+			var item = HandleStatsProperty(itemPair.Value);
+			
+			_dbContext.Add(item);
 		}
 		
-		var newRoot = new RootObject();
-		newRoot.Items = new Dictionary<string, Item>();
-		
-		foreach (var item in items)
-		{
-			newRoot.Items.Add(item.Key, item.Value);
-		}
+		rootObject.Items = items;
 		
 		var path = $"{AppConstants.ManifestDataFolder}/{AppConstants.DestinyInventoryItemDefinition}.json";
-		await WriteRootObjectToJsonFileAsync(newRoot, path);
-		//await _dbContext.SaveChangesAsync();
+		await WriteRootObjectToJsonFileAsync(rootObject, path);
+		await _dbContext.SaveChangesAsync();
 
 		return "Manifest successfully updated";
 	}
 	
-	string CleanUpJsonString(string input)
+	private Item HandleStatsProperty(Item item)
 	{
-		return Regex.Replace(input, @"\\u(?<Value>[a-zA-Z0-9]{4})", m =>
+		var statsBlock = item.stats;
+		if (statsBlock == null || statsBlock.stats == null)
+			return item;
+		
+		statsBlock.statsList = statsBlock.stats.Values.ToList();
+		
+		var existingStatsBlock = _dbContext.StatsBlocks.AsNoTracking().SingleOrDefault(s => s.statGroupHash == statsBlock.statGroupHash);
+			
+		if (existingStatsBlock != null)
 		{
-			var value = m.Groups["Value"].Value;
-			return ((char)int.Parse(value, System.Globalization.NumberStyles.HexNumber)).ToString();
-		});
+			_dbContext.Entry(statsBlock).State = EntityState.Detached;
+			
+			_dbContext.Entry(existingStatsBlock).State = EntityState.Modified;
+			existingStatsBlock.disablePrimaryStatDisplay = statsBlock.disablePrimaryStatDisplay;
+			existingStatsBlock.hasDisplayableStats = statsBlock.hasDisplayableStats;
+			existingStatsBlock.primaryBaseStatHash = statsBlock.primaryBaseStatHash;
+			
+			existingStatsBlock.statsList.Clear();
+			foreach (var statEntry in statsBlock.statsList)
+			{
+				existingStatsBlock.statsList.Add(statEntry);
+			}
+
+			item.stats = existingStatsBlock;
+		}
+		else
+		{
+			var trackedEntity = _dbContext.StatsBlocks.Local.SingleOrDefault(s => s.statGroupHash == statsBlock.statGroupHash);
+			if (trackedEntity == null)
+			{
+				_dbContext.StatsBlocks.Add(statsBlock);
+				item.stats = statsBlock;
+			}
+			else
+			{
+				item.stats = trackedEntity;
+			}
+		}
+		
+		return item;
 	}
 	
-	private string DecodeUtf8Base64(string base64String)
-	{
-		var base64Bytes = Convert.FromBase64String(base64String);
-		return Encoding.UTF8.GetString(base64Bytes);
-	}
-	
-	private async Task WriteStringToJsonFileAsync(string jsonString, string filePath)
+	private async Task WriteRootObjectToJsonFileAsync(InventoryItemsRootObject rootObject, string filePath)
 	{
 		try
 		{
-			_logger.LogError(TruncateLongString(jsonString, 75));
 			using (FileStream createStream = File.Create(filePath))
 			{
-				await JsonSerializer.SerializeAsync(createStream, jsonString);
+				await System.Text.Json.JsonSerializer.SerializeAsync(createStream, rootObject);
 			}
 
 			_logger.LogInformation("JSON data written to file successfully.");
@@ -108,27 +126,5 @@ public class DestinyManifectService : IDestinyManifectService
 		{
 			_logger.LogError($"Error writing JSON to file: {ex.Message}");
 		}
-	}
-	
-	private async Task WriteRootObjectToJsonFileAsync(RootObject rootObject, string filePath)
-	{
-		try
-		{
-			using (FileStream createStream = File.Create(filePath))
-			{
-				await JsonSerializer.SerializeAsync(createStream, rootObject);
-			}
-
-			_logger.LogInformation("JSON data written to file successfully.");
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError($"Error writing JSON to file: {ex.Message}");
-		}
-	}
-	
-	public string TruncateLongString(string str, int maxLength)
-	{
-		return str?[0..Math.Min(str.Length, maxLength)];
 	}
 }

@@ -27,8 +27,8 @@ public class DestinyDbContext : DbContext
 	public DbSet<StatEntry> StatEntries { get; set; }
 	public DbSet<StatsBlock> StatsBlocks { get; set; }
 	public DbSet<EquippingBlock> EquippingBlocks { get; set; }
-	public DbSet<TranslationBlock> TranslationBlocks { get; set; }
-	public DbSet<DyeReference> DyeReferences { get; set; }
+	//public DbSet<TranslationBlock> TranslationBlocks { get; set; }
+	//public DbSet<DyeReference> DyeReferences { get; set; }
 	public DbSet<Arrangement> Arrangements { get; set; }
 	public DbSet<Quality> Qualities { get; set; }
 	public DbSet<Version> Versions { get; set; }
@@ -40,156 +40,156 @@ public class DestinyDbContext : DbContext
 		base.OnModelCreating(modelBuilder);
 		
 		modelBuilder.Entity<Item>()
-			.HasMany(i => i.TooltipNotifications)
+			.HasMany(i => i.tooltipNotifications)
 			.WithOne()
 			.HasForeignKey("ItemId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.DisplayProperties)
+			.HasOne(i => i.displayProperties)
 			.WithMany()
 			.HasForeignKey("DisplayPropertiesId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.BackgroundColor)
+			.HasOne(i => i.backgroundColor)
 			.WithMany()
 			.HasForeignKey("BackgroundColorId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Action)
+			.HasOne(i => i.action)
 			.WithMany()
 			.HasForeignKey("ActionId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Crafting)
+			.HasOne(i => i.crafting)
 			.WithMany()
 			.HasForeignKey("CraftingId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Inventory)
+			.HasOne(i => i.inventory)
 			.WithMany()
 			.HasForeignKey("InventoryId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.SetData)
+			.HasOne(i => i.setData)
 			.WithMany()
 			.HasForeignKey("SetDataId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Stats)
+			.HasOne(i => i.stats)
 			.WithMany()
 			.HasForeignKey("StatsId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.EquippingBlock)
+			.HasOne(i => i.equippingBlock)
 			.WithMany()
 			.HasForeignKey("EquippingBlockId");
 
-		modelBuilder.Entity<Item>()
-			.HasOne(i => i.TranslationBlock)
-			.WithMany()
-			.HasForeignKey("TranslationBlockId");
+		// modelBuilder.Entity<Item>()
+		// 	.HasOne(i => i.translationBlock)
+		// 	.WithMany()
+		// 	.HasForeignKey("TranslationBlockId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Quality)
+			.HasOne(i => i.quality)
 			.WithMany()
 			.HasForeignKey("QualityId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Value)
+			.HasOne(i => i.value)
 			.WithMany()
 			.HasForeignKey("ValueId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.Sockets)
+			.HasOne(i => i.sockets)
 			.WithMany()
 			.HasForeignKey("SocketsId");
 
 		modelBuilder.Entity<Item>()
-			.HasOne(i => i.TalentGrid)
+			.HasOne(i => i.talentGrid)
 			.WithMany()
 			.HasForeignKey("TalentGridId");
 
 		modelBuilder.Entity<Item>()
-			.HasMany(i => i.InvestmentStats)
+			.HasMany(i => i.investmentStats)
 			.WithOne()
 			.HasForeignKey("ItemId");
 
 		modelBuilder.Entity<Item>()
-			.HasMany(i => i.Perks)
+			.HasMany(i => i.perks)
 			.WithOne()
 			.HasForeignKey("ItemId");
 
 		modelBuilder.Entity<SocketBlock>()
-			.HasMany(sb => sb.SocketEntries)
+			.HasMany(sb => sb.socketEntries)
 			.WithOne()
 			.HasForeignKey("SocketBlockId");
 
 		modelBuilder.Entity<SocketBlock>()
-			.HasMany(sb => sb.IntrinsicSockets)
+			.HasMany(sb => sb.intrinsicSockets)
 			.WithOne()
 			.HasForeignKey("SocketBlockId");
 
 		modelBuilder.Entity<SocketBlock>()
-			.HasMany(sb => sb.SocketCategories)
+			.HasMany(sb => sb.socketCategories)
 			.WithOne()
 			.HasForeignKey("SocketBlockId");
 
 		modelBuilder.Entity<SocketEntry>()
-			.HasMany(se => se.ReusablePlugItems)
+			.HasMany(se => se.reusablePlugItems)
 			.WithOne()
 			.HasForeignKey("SocketEntryId");
 
 		modelBuilder.Entity<Crafting>()
-			.HasMany(c => c.BonusPlugs)
+			.HasMany(c => c.bonusPlugs)
 			.WithOne()
 			.HasForeignKey("CraftingId");
 
 		modelBuilder.Entity<SetBlock>()
-			.HasMany(sb => sb.ItemList)
+			.HasMany(sb => sb.itemList)
 			.WithOne()
 			.HasForeignKey("SetBlockId");
 
 		modelBuilder.Entity<ValueBlock>()
-			.HasMany(vb => vb.ItemValue)
+			.HasMany(vb => vb.itemValue)
 			.WithOne()
 			.HasForeignKey("ValueBlockId");
 
 		modelBuilder.Entity<Action>()
-			.HasMany(a => a.RequiredItems)
+			.HasMany(a => a.requiredItems)
 			.WithOne()
 			.HasForeignKey("ActionId");
 
 		modelBuilder.Entity<Action>()
-			.HasMany(a => a.ProgressionRewards)
+			.HasMany(a => a.progressionRewards)
 			.WithOne()
 			.HasForeignKey("ActionId");
 			
  		modelBuilder.Entity<StatsBlock>()
-			.HasKey(sb => sb.StatGroupHash);
+			.HasKey(sb => sb.statGroupHash);
 
 		modelBuilder.Entity<StatEntry>()
-			.HasKey(se => se.Id);
+			.HasKey(se => se.id);
 
 		modelBuilder.Entity<StatsBlock>()
-			.HasMany(sb => sb.Stats)
-			.WithOne(se => se.StatsBlock)
-			.HasForeignKey(se => se.StatsBlockId);
+			.HasMany(sb => sb.statsList);
+			//.WithOne(se => se.StatsBlock)
+			//.HasForeignKey(se => se.StatsBlockId);
 		
 		/////
-		modelBuilder.Entity<TranslationBlock>()
-			.HasKey(tb => tb.WeaponPatternHash);
+		// modelBuilder.Entity<TranslationBlock>()
+		// 	.HasKey(tb => tb.weaponPatternHash);
 
-		modelBuilder.Entity<DyeReference>()
-			.HasKey(dr => dr.Id);
+		// modelBuilder.Entity<DyeReference>()
+		// 	.HasKey(dr => dr.id);
 
-		modelBuilder.Entity<TranslationBlock>()
-			.HasMany(tb => tb.LockedDyes)
-			.WithOne(dr => dr.TranslationBlock)
-			.HasForeignKey(dr => dr.TranslationBlockId)
-			.OnDelete(DeleteBehavior.Restrict);
+		// modelBuilder.Entity<TranslationBlock>()
+		// 	.HasMany(tb => tb.lockedDyes)
+		// 	.WithOne(dr => dr.translationBlock)
+		// 	.HasForeignKey(dr => dr.translationBlockId)
+		// 	.OnDelete(DeleteBehavior.Restrict);
 
 		modelBuilder.Entity<Quality>()
-			.HasMany(q => q.Versions)
+			.HasMany(q => q.versions)
 			.WithOne()
 			.HasForeignKey("QualityId");
 	}

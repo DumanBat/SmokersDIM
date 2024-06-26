@@ -13,360 +13,363 @@ using Newtonsoft.Json;
 // Sack
 // Summary
 // Animations
-public class RootObject
+public class InventoryItemsRootObject
 {
-	public Dictionary<string, Item> Items { get; set; }
+	public Dictionary<string, Item>? Items { get; set; }
 }
 
 public class Item
 {
 	[Key]
-	public uint Hash { get; set; }
-	public int Index { get; set; }
-	public bool Redacted { get; set; }
-	public bool Blacklisted { get; set; }
-	public DisplayProperties? DisplayProperties { get; set; }
-	public List<TooltipNotification>? TooltipNotifications { get; set; }
-	public uint? CollectibleHash { get; set; }
-	public string? IconWatermark { get; set; }
-	public string? IconWatermarkShelved { get; set; }
-	public DestinyColor? BackgroundColor { get; set; }
-	public string? Screenshot { get; set; }
-	public string? ItemTypeDisplayName { get; set; }
-	public string? FlavorText { get; set; }
-	public string? UiItemDisplayStyle { get; set; }
-	public string? ItemTypeAndTierDisplayName { get; set; }
-	public string? DisplaySource { get; set; }
-	public Action? Action { get; set; }
-	public Crafting? Crafting { get; set; }
-	public Inventory? Inventory { get; set; }
-	public SetBlock? SetData { get; set; }
-	public StatsBlock? Stats { get; set; }
-	public uint? EmblemObjectiveHash { get; set; }
-	public EquippingBlock? EquippingBlock { get; set; }
-	public TranslationBlock? TranslationBlock { get; set; }
-	public Quality? Quality { get; set; }
-	public ValueBlock? Value { get; set; }
-	public uint AcquireRewardSiteHash { get; set; }
-	public uint AcquireUnlockHash { get; set; }
-	public SocketBlock? Sockets { get; set; }
-	public TalentGrid? TalentGrid { get; set; }
-	public List<InvestmentStat>? InvestmentStats { get; set; }
-	public List<PerkEntry>? Perks { get; set; }
-	public uint? LoreHash { get; set; }
-	public uint? SummaryItemHash { get; set; }
-	public bool AllowActions { get; set; }
-	public bool DoesPostmasterPullHaveSideEffects { get; set; }
-	public bool NonTransferrable { get; set; }
-	public List<uint>? ItemCategoryHashes { get; set; }
-	public int SpecialItemType { get; set; }
-	public int ItemType { get; set; }
-	public int ItemSubType { get; set; }
-	public int ClassType { get; set; }
-	public int BreakerType { get; set; }
-	public uint? BreakerTypeHash { get; set; }
-	public bool Equippable { get; set; }
-	public List<uint>? DamageTypeHashes { get; set; }
-	public List<int>? DamageTypes { get; set; }
-	public int DefaultDamageType { get; set; }
-	public uint? DefaultDamageTypeHash { get; set; }
-	public uint? SeasonHash { get; set; }
-	public bool IsWrapper { get; set; }
-	public List<string>? TraitIds { get; set; }
-	public List<uint>? TraitHashes { get; set; }
+	public uint hash { get; set; }
+	public int index { get; set; }
+	public bool redacted { get; set; }
+	public bool blacklisted { get; set; }
+	public DisplayProperties? displayProperties { get; set; }
+	public List<TooltipNotification>? tooltipNotifications { get; set; }
+	public uint? collectibleHash { get; set; }
+	public string? iconWatermark { get; set; }
+	public string? iconWatermarkShelved { get; set; }
+	public DestinyColor? backgroundColor { get; set; }
+	public string? screenshot { get; set; }
+	public string? itemTypeDisplayName { get; set; }
+	public string? flavorText { get; set; }
+	public string? uiItemDisplayStyle { get; set; }
+	public string? itemTypeAndTierDisplayName { get; set; }
+	public string? displaySource { get; set; }
+	public Action? action { get; set; }
+	public Crafting? crafting { get; set; }
+	public Inventory? inventory { get; set; }
+	public SetBlock? setData { get; set; }
+	public StatsBlock? stats { get; set; }
+	public uint? emblemObjectiveHash { get; set; }
+	public EquippingBlock? equippingBlock { get; set; }
+	[NotMapped]
+	public TranslationBlock? translationBlock { get; set; }
+	public Quality? quality { get; set; }
+	public ValueBlock? value { get; set; }
+	public uint acquireRewardSiteHash { get; set; }
+	public uint acquireUnlockHash { get; set; }
+	public SocketBlock? sockets { get; set; }
+	public TalentGrid? talentGrid { get; set; }
+	public List<InvestmentStat>? investmentStats { get; set; }
+	public List<PerkEntry>? perks { get; set; }
+	public uint? loreHash { get; set; }
+	public uint? summaryItemHash { get; set; }
+	public bool allowActions { get; set; }
+	public bool doesPostmasterPullHaveSideEffects { get; set; }
+	public bool nonTransferrable { get; set; }
+	public List<uint>? itemCategoryHashes { get; set; }
+	public int specialItemType { get; set; }
+	public int itemType { get; set; }
+	public int itemSubType { get; set; }
+	public int classType { get; set; }
+	public int breakerType { get; set; }
+	public uint? breakerTypeHash { get; set; }
+	public bool equippable { get; set; }
+	public List<uint>? damageTypeHashes { get; set; }
+	public List<int>? damageTypes { get; set; }
+	public int defaultDamageType { get; set; }
+	public uint? defaultDamageTypeHash { get; set; }
+	public uint? seasonHash { get; set; }
+	public bool isWrapper { get; set; }
+	public List<string>? traitIds { get; set; }
+	public List<uint>? traitHashes { get; set; }
 }
 
 public class SocketBlock
 {
-	public uint Id { get; set; }
-	public string? Detail { get; set; }
-	public List<SocketEntry>? SocketEntries { get; set; }
-	public List<IntrinsicSocketEntryDefinition>? IntrinsicSockets { get; set; }
-	public List<SocketCategory>? SocketCategories { get; set; }
+	public uint id { get; set; }
+	public string? detail { get; set; }
+	public List<SocketEntry>? socketEntries { get; set; }
+	public List<IntrinsicSocketEntryDefinition>? intrinsicSockets { get; set; }
+	public List<SocketCategory>? socketCategories { get; set; }
 }
 
 public class SocketEntry
 {
-	public uint Id { get; set; }
-	public uint SocketTypeHash { get; set; }
-	public uint SingleInitialItemHash { get; set; }
-	public List<SocketEntryPlugItem>? ReusablePlugItems { get; set; }
-	public bool PreventInitializationOnVendorPurchase { get; set; }
-	public bool HidePerksInItemTooltip { get; set; }
-	public int PlugSources { get; set; }
-	public uint? ReusablePlugSetHash { get; set; }
-	public uint? RandomizedPlugSetHash { get; set; }
-	public bool DefaultVisible { get; set; }
+	public uint id { get; set; }
+	public uint socketTypeHash { get; set; }
+	public uint singleInitialItemHash { get; set; }
+	public List<SocketEntryPlugItem>? reusablePlugItems { get; set; }
+	public bool preventInitializationOnVendorPurchase { get; set; }
+	public bool hidePerksInItemTooltip { get; set; }
+	public int plugSources { get; set; }
+	public uint? reusablePlugSetHash { get; set; }
+	public uint? randomizedPlugSetHash { get; set; }
+	public bool defaultVisible { get; set; }
 }
 
 public class IntrinsicSocketEntryDefinition
 {
-	public uint Id { get; set; }
-	public uint PlugItemHash { get; set; }
-	public uint SocketTypeHash { get; set; }
-	public bool DefaultVisible { get; set; }
+	public uint id { get; set; }
+	public uint plugItemHash { get; set; }
+	public uint socketTypeHash { get; set; }
+	public bool defaultVisible { get; set; }
 }
 
 public class SocketCategory
 {
-	public uint Id { get; set; }
-	public uint SocketCategoryHash { get; set; }
-	public List<int>? SocketIndexes { get; set; }
+	public uint id { get; set; }
+	public uint socketCategoryHash { get; set; }
+	public List<int>? socketIndexes { get; set; }
 }
 
 public class SocketEntryPlugItem
 {
-	public uint Id { get; set; }
-	public uint PlugItemHash { get; set; }
+	public uint id { get; set; }
+	public uint plugItemHash { get; set; }
 }
 
 public class PerkEntry
 {
-	public uint Id { get; set; }
-	public string? RequirementDisplayString { get; set; }
-	public uint PerkHash { get; set; }
-	public int PerkVisibility { get; set; }
+	public uint id { get; set; }
+	public string? requirementDisplayString { get; set; }
+	public uint perkHash { get; set; }
+	public int perkVisibility { get; set; }
 }
 
 public class TooltipNotification
 {
-	public uint Id { get; set; }
-	public string? DisplayString { get; set; }
-	public string? DisplayStyle { get; set; }
+	public uint id { get; set; }
+	public string? displayString { get; set; }
+	public string? displayStyle { get; set; }
 }
 
 public class DisplayProperties
 {
-	public uint Id { get; set; }
-	public string? Description { get; set; }
-	public string? Name { get; set; }
-	public string? Icon { get; set; }
-	public bool HasIcon { get; set; }
+	public uint id { get; set; }
+	public string? description { get; set; }
+	public string? name { get; set; }
+	public string? icon { get; set; }
+	public bool hasIcon { get; set; }
 }
 
 public class DestinyColor
 {
-	public uint Id { get; set; }
-	public uint ColorHash { get; set; }
-	public int Red { get; set; }
-	public int Green { get; set; }
-	public int Blue { get; set; }
-	public int Alpha { get; set; }
+	public uint id { get; set; }
+	public uint colorHash { get; set; }
+	public int red { get; set; }
+	public int green { get; set; }
+	public int blue { get; set; }
+	public int alpha { get; set; }
 }
 
 public class Action
 {
-	public uint Id { get; set; }
-	public string? VerbName { get; set; }
-	public string? VerbDescription { get; set; }
-	public bool IsPositive { get; set; }
-	public int RequiredCooldownSeconds { get; set; }
-	public string? OverlayScreenName { get; set; }
-	public string? OverlayIcon { get; set; }
-	public List<RequiredItem>? RequiredItems { get; set; }
-	public List<ProgressionReward>? ProgressionRewards { get; set; }
-	public string? ActionTypeLabel { get; set; }
-	public string? RequiredLocation { get; set; }
-	public uint RequiredCooldownHash { get; set; }
-	public uint RewardSheetHash { get; set; }
-	public uint RewardItemHash { get; set; }
-	public uint RewardSiteHash { get; set; }
-	public bool DeleteOnAction { get; set; }
-	public bool ConsumeEntireStack { get; set; }
-	public bool UseOnAcquire { get; set; }
+	public uint id { get; set; }
+	public string? verbName { get; set; }
+	public string? verbDescription { get; set; }
+	public bool isPositive { get; set; }
+	public int requiredCooldownSeconds { get; set; }
+	public string? overlayScreenName { get; set; }
+	public string? overlayIcon { get; set; }
+	public List<RequiredItem>? requiredItems { get; set; }
+	public List<ProgressionReward>? progressionRewards { get; set; }
+	public string? actionTypeLabel { get; set; }
+	public string? requiredLocation { get; set; }
+	public uint requiredCooldownHash { get; set; }
+	public uint rewardSheetHash { get; set; }
+	public uint rewardItemHash { get; set; }
+	public uint rewardSiteHash { get; set; }
+	public bool deleteOnAction { get; set; }
+	public bool consumeEntireStack { get; set; }
+	public bool useOnAcquire { get; set; }
 }
 
 public class Crafting
 {
-	public uint Id { get; set; }
-	public uint OutputItemHash { get; set; }
-	public List<uint>? RequiredSocketTypeHashes { get; set; }
-	public List<string>? FailedRequirementStrings { get; set; }
-	public uint BaseMaterialRequirements { get; set; }
-	public List<CraftingBlockBonusPlug>? BonusPlugs { get; set; }
+	public uint id { get; set; }
+	public uint outputItemHash { get; set; }
+	public List<uint>? requiredSocketTypeHashes { get; set; }
+	public List<string>? failedRequirementStrings { get; set; }
+	public uint baseMaterialRequirements { get; set; }
+	public List<CraftingBlockBonusPlug>? bonusPlugs { get; set; }
 }
 
 public class SetBlock
 {
-	public uint Id { get; set; }
-	public List<SetBlockEntry>? ItemList { get; set; }
-	public bool RequireOrderedSetItemAdd { get; set; }
-	public bool SetIsFeatured { get; set; }
-	public string? SetType { get; set; }
-	public string? QuestLineName { get; set; }
-	public string? QuestLineDescription { get; set; }
-	public string? QuestStepSummary { get; set; }
+	public uint id { get; set; }
+	public List<SetBlockEntry>? itemList { get; set; }
+	public bool requireOrderedSetItemAdd { get; set; }
+	public bool setIsFeatured { get; set; }
+	public string? setType { get; set; }
+	public string? questLineName { get; set; }
+	public string? questLineDescription { get; set; }
+	public string? questStepSummary { get; set; }
 }
 
 public class SetBlockEntry
 {
-	public uint Id { get; set; }
-	public int TrackingValue { get; set; }
-	public uint ItemHash { get; set; }
+	public uint id { get; set; }
+	public int trackingValue { get; set; }
+	public uint itemHash { get; set; }
 }
 
 public class CraftingBlockBonusPlug
 {
-	public uint Id { get; set; }
-	public uint SocketTypeHash { get; set; }
-	public uint PlugItemHash { get; set; }
+	public uint id { get; set; }
+	public uint socketTypeHash { get; set; }
+	public uint plugItemHash { get; set; }
 }
 
 public class ValueBlock
 {
-	public uint Id { get; set; }
-	public List<ItemQuantity>? ItemValue { get; set; }
-	public string? ValueDescription { get; set; }
+	public uint id { get; set; }
+	public List<ItemQuantity>? itemValue { get; set; }
+	public string? valueDescription { get; set; }
 }
 
 public class ItemQuantity
 {
-	public uint Id { get; set; }
-	public uint ItemHash { get; set; }
-	public long ItemInstanceId { get; set; }
-	public int Quantity { get; set; }
-	public bool HasConditionalVisibility { get; set; }
+	public uint id { get; set; }
+	public uint itemHash { get; set; }
+	public long itemInstanceId { get; set; }
+	public int quantity { get; set; }
+	public bool hasConditionalVisibility { get; set; }
 }
 
 public class RequiredItem
 {
-	public uint Id { get; set; }
-	public int Count { get; set; }
-	public uint ItemHash { get; set; }
-	public bool DeleteOnAction { get; set; }
+	public uint id { get; set; }
+	public int count { get; set; }
+	public uint itemHash { get; set; }
+	public bool deleteOnAction { get; set; }
 }
 
 public class ProgressionReward
 {
-	public uint Id { get; set; }
-	public uint ProgressionMappingHash { get; set; }
-	public int Amount { get; set; }
-	public bool ApplyThrottles { get; set; }
+	public uint id { get; set; }
+	public uint progressionMappingHash { get; set; }
+	public int amount { get; set; }
+	public bool applyThrottles { get; set; }
 }
 
 public class Inventory
 {
-	public uint Id { get; set; }
-	public string? StackUniqueLabel { get; set; }
-	public int MaxStackSize { get; set; }
-	public uint BucketTypeHash { get; set; }
-	public uint RecoveryBucketTypeHash { get; set; }
-	public uint TierTypeHash { get; set; }
-	public bool IsInstanceItem { get; set; }
-	public bool NonTransferrableOriginal { get; set; }
-	public string? TierTypeName { get; set; }
-	public int TierType { get; set; }
-	public string? ExpirationTooltip { get; set; }
-	public string? ExpiredInActivityMessage { get; set; }
-	public string? ExpiredInOrbitMessage { get; set; }
-	public bool SuppressExpirationWhenObjectivesComplete { get; set; }
-	public uint RecipeItemHash { get; set; }
+	public uint id { get; set; }
+	public string? stackUniqueLabel { get; set; }
+	public int maxStackSize { get; set; }
+	public uint bucketTypeHash { get; set; }
+	public uint recoveryBucketTypeHash { get; set; }
+	public uint tierTypeHash { get; set; }
+	public bool isInstanceItem { get; set; }
+	public bool nonTransferrableOriginal { get; set; }
+	public string? tierTypeName { get; set; }
+	public int tierType { get; set; }
+	public string? expirationTooltip { get; set; }
+	public string? expiredInActivityMessage { get; set; }
+	public string? expiredInOrbitMessage { get; set; }
+	public bool suppressExpirationWhenObjectivesComplete { get; set; }
+	public uint recipeItemHash { get; set; }
 }
 
 public class StatsBlock
 {
 	[Key]
-	public uint StatGroupHash { get; set; }
-	public bool DisablePrimaryStatDisplay { get; set; }
-	public bool HasDisplayableStats { get; set; }
-	public uint PrimaryBaseStatHash { get; set; }
+	public uint statGroupHash { get; set; }
+	public bool disablePrimaryStatDisplay { get; set; }
+	public bool hasDisplayableStats { get; set; }
+	public uint primaryBaseStatHash { get; set; }
 	
-	public ICollection<StatEntry>? Stats { get; set; }
+	[NotMapped]
+	public Dictionary<string, StatEntry>? stats { get; set; }
+	// stats for JSON deserializing, statsList for DB setup
+	public ICollection<StatEntry> statsList {get; set; } = new List<StatEntry>();
 }
 
 public class StatEntry
 {
 	[Key]
-	public int Id { get; set; }
-	public uint StatHash { get; set; }
-	public int Value { get; set; }
-	public int Minimum { get; set; }
-	public int Maximum { get; set; }
-	public int DisplayMaximum { get; set; }
+	public int id { get; set; }
+	public uint statHash { get; set; }
+	public int value { get; set; }
+	public int minimum { get; set; }
+	public int maximum { get; set; }
+	public int displayMaximum { get; set; }
 	
 	public uint StatsBlockId { get; set; }
-	public StatsBlock StatsBlock { get; set; }
 }
 
 public class EquippingBlock
 {
-	public uint Id { get; set; }
-	public uint? GearsetItemHash { get; set; }
-	public string? UniqueLabel { get; set; }
-	public uint UniqueLabelHash { get; set; }
-	public uint EquipmentSlotTypeHash { get; set; }
-	public int Attributes { get; set; }
-	public uint EquippingSoundHash { get; set; }
-	public uint HornSoundHash { get; set; }
-	public int AmmoType { get; set; }
-	public List<string>? DisplayStrings { get; set; }
+	public uint id { get; set; }
+	public uint? gearsetItemHash { get; set; }
+	public string? uniqueLabel { get; set; }
+	public uint uniqueLabelHash { get; set; }
+	public uint equipmentSlotTypeHash { get; set; }
+	public int attributes { get; set; }
+	public uint equippingSoundHash { get; set; }
+	public uint hornSoundHash { get; set; }
+	public int ammoType { get; set; }
+	public List<string>? displayStrings { get; set; }
 }
 
 public class TranslationBlock
 {
 	[Key]
-	public string? WeaponPatternIdentifier { get; set; }
-	public uint WeaponPatternHash { get; set; }
-	public bool HasGeometry { get; set; }
+	public string? weaponPatternIdentifier { get; set; }
+	public uint weaponPatternHash { get; set; }
+	public bool hasGeometry { get; set; }
 	[NotMapped]
-	public ICollection<DyeReference>? DefaultDyes { get; set; }
+	public ICollection<DyeReference>? defaultDyes { get; set; }
 	[NotMapped]
-	public ICollection<DyeReference>? LockedDyes { get; set; }
+	public ICollection<DyeReference>? lockedDyes { get; set; }
 	[NotMapped]
-	public ICollection<DyeReference>? CustomDyes { get; set; }
-	public List<Arrangement>? Arrangements { get; set; }
+	public ICollection<DyeReference>? customDyes { get; set; }
+	public List<Arrangement>? arrangements { get; set; }
 }
 
 public class DyeReference
 {
-	public uint Id { get; set; }
-	public uint ChannelHash { get; set; }
-	public uint DyeHash { get; set; }
-	public uint TranslationBlockId { get; set; }
-	public TranslationBlock? TranslationBlock { get; set; }
+	public uint id { get; set; }
+	public uint channelHash { get; set; }
+	public uint dyeHash { get; set; }
+	public uint translationBlockId { get; set; }
+	public TranslationBlock? translationBlock { get; set; }
 }
 
 public class Arrangement
 {
-	public uint Id { get; set; }
-	public uint ClassHash { get; set; }
-	public uint ArtArrangementHash { get; set; }
+	public uint id { get; set; }
+	public uint classHash { get; set; }
+	public uint artArrangementHash { get; set; }
 }
 
 public class Quality
 {
-	public uint Id { get; set; }
-	public List<int>? ItemLevels { get; set; }
-	public int QualityLevel { get; set; }
-	public string? InfusionCategoryName { get; set; }
-	public uint InfusionCategoryHash { get; set; }
-	public List<uint>? InfusionCategoryHashes { get; set; }
-	public uint ProgressionLevelRequirementHash { get; set; }
-	public uint CurrentVersion { get; set; }
-	public List<Version>? Versions { get; set; }
-	public List<string>? DisplayVersionWatermarkIcons { get; set; }
+	public uint id { get; set; }
+	public List<int>? itemLevels { get; set; }
+	public int qualityLevel { get; set; }
+	public string? infusionCategoryName { get; set; }
+	public uint infusionCategoryHash { get; set; }
+	public List<uint>? infusionCategoryHashes { get; set; }
+	public uint progressionLevelRequirementHash { get; set; }
+	public uint currentVersion { get; set; }
+	public List<Version>? versions { get; set; }
+	public List<string>? displayVersionWatermarkIcons { get; set; }
 }
 
 public class Version
 {
-	public uint Id { get; set; }
-	public uint PowerCapHash { get; set; }
+	public uint id { get; set; }
+	public uint powerCapHash { get; set; }
 }
 
 public class TalentGrid
 {
-	public uint Id { get; set; }
-	public uint TalentGridHash { get; set; }
-	public string? ItemDetailString { get; set; }
-	public string? BuildName { get; set; }
-	public int HudDamageType { get; set; }
-	public string? HudIcon { get; set; }
+	public uint id { get; set; }
+	public uint talentGridHash { get; set; }
+	public string? itemDetailString { get; set; }
+	public string? buildName { get; set; }
+	public int hudDamageType { get; set; }
+	public string? hudIcon { get; set; }
 }
 
 public class InvestmentStat
 {
-	public uint Id { get; set; }
-	public uint StatTypeHash { get; set; }
-	public int Value { get; set; }
-	public bool IsConditionallyActive { get; set; }
+	public uint id { get; set; }
+	public uint statTypeHash { get; set; }
+	public int value { get; set; }
+	public bool isConditionallyActive { get; set; }
 }

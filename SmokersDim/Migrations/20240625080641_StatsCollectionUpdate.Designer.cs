@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace SmokersDim.Migrations
 {
     [DbContext(typeof(DestinyDbContext))]
-    partial class DestinyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240625080641_StatsCollectionUpdate")]
+    partial class StatsCollectionUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -878,9 +881,6 @@ namespace SmokersDim.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<long>("StatsBlockId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("displayMaximum")
                         .HasColumnType("integer");
 
@@ -893,12 +893,15 @@ namespace SmokersDim.Migrations
                     b.Property<long>("statHash")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("statsBlockId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("value")
                         .HasColumnType("integer");
 
                     b.HasKey("id");
 
-                    b.HasIndex("StatsBlockId");
+                    b.HasIndex("statsBlockId");
 
                     b.ToTable("StatEntries");
                 });
@@ -1211,13 +1214,13 @@ namespace SmokersDim.Migrations
 
             modelBuilder.Entity("StatEntry", b =>
                 {
-                    b.HasOne("StatsBlock", "StatsBlock")
+                    b.HasOne("StatsBlock", "statsBlock")
                         .WithMany("statsList")
-                        .HasForeignKey("StatsBlockId")
+                        .HasForeignKey("statsBlockId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("StatsBlock");
+                    b.Navigation("statsBlock");
                 });
 
             modelBuilder.Entity("TooltipNotification", b =>
