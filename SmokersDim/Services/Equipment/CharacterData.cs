@@ -1,16 +1,17 @@
 using System.Text.Json.Serialization;
 
  [Serializable]
-public class EquipmentDatas
+public class CharacterDatas
  {
- 	public List<EquipmentData> equipmentDatas { get; set; }
+ 	public List<CharacterData> characterDatas { get; set; }
  }
  
  [Serializable]
- public class EquipmentData
+ public class CharacterData
 {
 	public string characterId { get; set; }
 	public List<EquipmentItem> items { get; set; }
+	public List<EquipmentItem> inventoryItems {get; set;}
 }
 
  [Serializable]

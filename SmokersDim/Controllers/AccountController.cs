@@ -13,7 +13,6 @@ public class AccountController : ControllerBase
 	public const string MEMBERSHIP_TYPE_CACHE_KEY = "MembershipType";
 	public const string MEMBERSHIP_ID_CACHE_KEY = "MembershipId";
 	public const string PROFILE_DATA_CACHE_KEY = "ProfileData";
-	public const string CHARACTERS_DATA_CACHE_KEY = "CharactersDataArray";
 	public const string CHARACTER_IDS_CACHE_KEY = "CharactersIDsArray";
 	private readonly IBungieApiService _bungieApiService;
 	private readonly IEquipmentService _equipmentService;
@@ -64,14 +63,14 @@ public class AccountController : ControllerBase
 	public IActionResult ShowEquipment()
 	{
 		var session = _httpContextAccessor.HttpContext.Session;
-		var equipmentData = session.GetString(EquipmentService.EQUIPMENT_DATA_CACHE_KEY);
+		var equipmentData = session.GetString(EquipmentService.CHARACTER_DATA_CACHE_KEY);
 
 		if (!string.IsNullOrEmpty(equipmentData))
 			return Content(equipmentData, AppConstants.JsonContentType);        
 		else
 		{
-			_logger.LogError($"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
-			return StatusCode(500, $"{EquipmentService.EQUIPMENT_DATA_CACHE_KEY} is empty");
+			_logger.LogError($"{EquipmentService.CHARACTER_DATA_CACHE_KEY} is empty");
+			return StatusCode(500, $"{EquipmentService.CHARACTER_DATA_CACHE_KEY} is empty");
 		}
 	}
 	

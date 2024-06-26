@@ -13,6 +13,7 @@ public interface IBungieApiService
 	Task<string> GetMembershipInfo();
 	Task<string> GetProfile(string membershipType, string membershipId);
 	Task<string> GetEquipment(string membershipType, string membershipId, string characterId);
+	Task<string> GetCharacterInventory(string membershipType, string membershipId, string characterId);
 }
 
 public class BungieApiService : IBungieApiService
@@ -52,6 +53,14 @@ public class BungieApiService : IBungieApiService
 	{
 		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Character/{characterId}/?components=205";
 		_logger.LogInformation("Requesting Equipment Info from URL: {Url}", url);
+
+		return await SendRequestAsync(url);
+	}
+	
+	public async Task<string> GetCharacterInventory(string membershipType, string membershipId, string characterId)
+	{
+		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Character/{characterId}/?components=201";
+		_logger.LogInformation("Requesting Character Inventory Info from URL: {Url}", url);
 
 		return await SendRequestAsync(url);
 	}
