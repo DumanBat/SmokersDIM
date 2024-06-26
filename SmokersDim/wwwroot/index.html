@@ -4,53 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destiny Character Info</title>
-    <script>
-        async function showEquipment() {
-            try {
-                const response = await fetch('/account/show-equipment', {
-                    method: 'GET',
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-                    
-                } else {
-                    console.error('Error fetching and showing equipment info:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-        async function showItemManifest() {
-            try {
-                const response = await fetch('/account/show-item-manifest', {
-                    method: 'GET',
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-                    
-                } else {
-                    console.error('Error fetching and showing item manifest:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-        async function login() {
-            try {
-                window.location.href = '/account/login';
-            } catch (error) {
-                console.error('Error during login:', error);
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <h1>Destiny Character Info</h1>
     <button onclick="login()">Login</button>
     <button onclick="showEquipment()">Show Equipment Info</button>
-    <button onclick="showItemManifest()">Show Item Manifest</button>
+    <button onclick="displayItems()">Display Items</button>
+    <div id="item-container" class="items-grid"></div>
     <pre id="result"></pre>
+    <script src="js/script.js"></script>
 </body>
 </html>

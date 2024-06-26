@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\index.html"
     },
     {
+      "Id": "G:\\Backend\\SmokersDIM\\SmokersDim\\wwwroot\\js\\script.js",
+      "PackagePath": "staticwebassets\\js\\script.js"
+    },
+    {
+      "Id": "G:\\Backend\\SmokersDIM\\SmokersDim\\wwwroot\\styles\\styles.css",
+      "PackagePath": "staticwebassets\\styles\\styles.css"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.SmokersDim.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

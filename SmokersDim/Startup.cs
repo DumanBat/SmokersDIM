@@ -20,6 +20,7 @@ public class Startup
 		services.AddTransient<IBungieApiService, BungieApiService>();
 		services.AddTransient<IEquipmentService, EquipmentService>();
 		services.AddTransient<IDestinyManifectService, DestinyManifectService>();
+        services.AddScoped<IDatabaseItemDataService, DatabaseItemDataService>();
 		services.AddControllers();
 
 		services.AddCors(options =>
