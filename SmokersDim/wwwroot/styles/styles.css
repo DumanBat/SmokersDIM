@@ -1,5 +1,3 @@
-/* styles/styles.css */
-
 body {
     font-family: Arial, sans-serif;
     background-color: #1a1a1a;
@@ -27,7 +25,7 @@ button:hover {
 
 .characters-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 20px;
 }
 
@@ -38,15 +36,31 @@ button:hover {
     border: 1px solid #555;
     padding: 10px;
     border-radius: 10px;
-    width: 300px;
+    width: 320px;
     background-color: #2a2a2a;
 }
 
-.equipped-items, .additional-items {
+.items-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    align-items: flex-start;
     margin-bottom: 20px;
+}
+
+.equipped-items {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    gap: 10px;
+}
+
+.additional-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    margin-left: 10px;
+    width: 180px;
+    height: 180px;
 }
 
 .item {

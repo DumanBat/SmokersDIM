@@ -13,11 +13,10 @@ async function showEquipment() {
 }
 
 async function displayCharactersEquipment(characterDatas) {
-    // change to all equipment slots
     for (let i = 0; i < characterDatas.length; i++) 
     {
         let startingBucketIndex = 0;
-        for (let j = 0; j < 3; j++)
+        for (let j = 0; j < 3; j++) 
         {
             const equippedItemsContainer = document.getElementById(`equipped-items-${(i * 3) + j}`);
             equippedItemsContainer.innerHTML = '';
@@ -37,17 +36,17 @@ async function displayCharactersEquipment(characterDatas) {
             else if (j == 2)
                 currentBucketHash = 953998645;
             
-            for (let k = startingBucketIndex; k < startingBucketIndex + 10; k++)
+            for (let k = startingBucketIndex; k < startingBucketIndex + 9; k++) 
             {
                 let currentItem = characterDatas[i].inventoryItems[k];
-                if (currentItem.bucketHash != currentBucketHash){
+                if (currentItem.bucketHash != currentBucketHash) {
                     startingBucketIndex = k;
                     break;
                 }
-                const itemElement = document.createElement('div');
-                itemElement.classList.add('item');
-                itemElement.style.backgroundImage = `url(${await getItemIcon(currentItem.itemHash)})`;
-                additionalItemsContainer.appendChild(itemElement);
+                const additionalItemElement = document.createElement('div');
+                additionalItemElement.classList.add('item');
+                additionalItemElement.style.backgroundImage = `url(${await getItemIcon(currentItem.itemHash)})`;
+                additionalItemsContainer.appendChild(additionalItemElement);
             }
         }
     }
