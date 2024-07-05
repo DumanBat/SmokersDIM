@@ -12,8 +12,10 @@ public interface IBungieApiService
 	
 	Task<string> GetMembershipInfo();
 	Task<string> GetProfile(string membershipType, string membershipId);
+	Task<string> GetProfileVaultData(string membershipType, string membershipId);
 	Task<string> GetEquipment(string membershipType, string membershipId, string characterId);
 	Task<string> GetCharacterInventory(string membershipType, string membershipId, string characterId);
+	Task<string> GetItemInstance(string membershipType, string membershipId, string itemInstanceHash);
 }
 
 public class BungieApiService : IBungieApiService
@@ -77,6 +79,22 @@ public class BungieApiService : IBungieApiService
 	{
 		var url = $"{_baseUrl}{manifestUrl}";
 		_logger.LogInformation("Requesting Destiny Manifest from URL: {Url}", url);
+
+		return await SendRequestAsync(url);
+	}
+
+	public async Task<string> GetProfileVaultData(string membershipType, string membershipId)
+	{
+		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/?components=102";
+		_logger.LogInformation("Requesting Profile Vault Data from URL: {Url}", url);
+
+		return await SendRequestAsync(url);
+	}
+
+	public async Task<string> GetItemInstance(string membershipType, string membershipId, string itemInstanceHash)
+	{
+		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Item/{itemInstanceHash}/?components=300,302,304";
+		_logger.LogInformation("Requesting Item Instance Data from URL: {Url}", url);
 
 		return await SendRequestAsync(url);
 	}

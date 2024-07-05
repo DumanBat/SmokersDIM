@@ -16,17 +16,20 @@ public class AccountController : ControllerBase
 	public const string CHARACTER_IDS_CACHE_KEY = "CharactersIDsArray";
 	private readonly IBungieApiService _bungieApiService;
 	private readonly IEquipmentService _equipmentService;
+	private readonly IProfileVaultService _profileVaultService;
 	private readonly IDestinyManifectService _manifestService;
 	private readonly ILogger<AccountController> _logger;
 	private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-	public AccountController(IBungieApiService bungieApiService, IEquipmentService equipmentService, IDestinyManifectService destinyManifectService, ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor)
+	public AccountController(IBungieApiService bungieApiService, IEquipmentService equipmentService, IDestinyManifectService destinyManifectService, 
+		ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor, IProfileVaultService profileVaultService)
 	{
 		_bungieApiService = bungieApiService;
 		_manifestService = destinyManifectService;
 		_httpContextAccessor = httpContextAccessor;
 		_equipmentService = equipmentService ?? throw new ArgumentNullException(nameof(equipmentService));
+		_profileVaultService = profileVaultService;
 		_logger = logger;
 	}
 
@@ -49,6 +52,7 @@ public class AccountController : ControllerBase
 			var characterIds = session.GetString(CHARACTER_IDS_CACHE_KEY);			
 			
 			await _equipmentService.SetEquipmentDataAsync(membershipType, membershipId, characterIds);
+			await _profileVaultService.SetVaultDataAsync(membershipType, membershipId);
 			//await _manifestService.UpdateInventoryItemsManifestAsync();
 			return Redirect(UrlConstants.AuthCallbackRedirectUrl);
 		}

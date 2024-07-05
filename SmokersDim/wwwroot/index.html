@@ -11,47 +11,86 @@
     <button onclick="login()">Login</button>
     <button onclick="showEquipment()">Show Equipment Info</button>
     <div class="characters-container">
-        <div id="character-1" class="character-group">
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-0"></div>
-                <div class="additional-items" id="additional-items-0"></div>
+        <div class="row-content" id="row-content-kinetic">
+            <div class="content-cell" id="content-cell-0">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-0"></div>
+                    <div class="additional-items" id="additional-items-0"></div>
+                </div>
+            </div>        
+            <div class="content-cell" id="content-cell-1">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-1"></div>
+                    <div class="additional-items" id="additional-items-1"></div>
+                </div>
+            </div>        
+            <div class="content-cell" id="content-cell-2">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-2"></div>
+                    <div class="additional-items" id="additional-items-2"></div>
+                </div>
+            </div>        
+            <div class="content-cell" id="content-cell-kinetic-vault">
+                <div class="items-container">
+                    <div class="items-grid" id="items-grid-kinetic-vault"></div>
+                </div>
             </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-1"></div>
-                <div class="additional-items" id="additional-items-1"></div>
+        </div>    
+        <div class="row-content" id="row-content-energy">
+            <div id="content-cell-3" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-3"></div>
+                    <div class="additional-items" id="additional-items-3"></div>
+                </div>
+            </div>        
+            <div id="content-cell-4" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-4"></div>
+                    <div class="additional-items" id="additional-items-4"></div>
+                </div>
+            </div>        
+            <div id="content-cell-5" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-5"></div>
+                    <div class="additional-items" id="additional-items-5"></div>
+                </div>
+            </div>        
+            <div id="content-cell-energy-vault" class="content-cell">
+                <div class="items-container">
+                    <div class="items-grid" id="items-grid-energy-vault"></div>
+                </div>
             </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-2"></div>
-                <div class="additional-items" id="additional-items-2"></div>
+        </div>    
+        <div class="row-content" id="row-content-kinetic">
+            <div id="content-cell-6" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-6"></div>
+                    <div class="additional-items" id="additional-items-6"></div>
+                </div>
+            </div>        
+            <div id="content-cell-7" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-7"></div>
+                    <div class="additional-items" id="additional-items-7"></div>
+                </div>
+            </div>        
+            <div id="content-cell-8" class="content-cell">
+                <div class="items-container">
+                    <div class="equipped-items" id="equipped-items-8"></div>
+                    <div class="additional-items" id="additional-items-8"></div>
+                </div>
+            </div>        
+            <div id="content-cell-heavy-vault" class="content-cell">
+                <div class="items-container">
+                    <div class="items-grid" id="items-grid-heavy-vault"></div>
+                </div>
             </div>
         </div>
-        <div id="character-2" class="character-group">
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-3"></div>
-                <div class="additional-items" id="additional-items-3"></div>
-            </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-4"></div>
-                <div class="additional-items" id="additional-items-4"></div>
-            </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-5"></div>
-                <div class="additional-items" id="additional-items-5"></div>
-            </div>
-        </div>
-        <div id="character-3" class="character-group">
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-6"></div>
-                <div class="additional-items" id="additional-items-6"></div>
-            </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-7"></div>
-                <div class="additional-items" id="additional-items-7"></div>
-            </div>
-            <div class="items-container">
-                <div class="equipped-items" id="equipped-items-8"></div>
-                <div class="additional-items" id="additional-items-8"></div>
-            </div>
+    </div>
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div id="popup-item-info"></div>
         </div>
     </div>
     <pre id="result"></pre>

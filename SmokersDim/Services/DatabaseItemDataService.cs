@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 
 public interface IDatabaseItemDataService
@@ -33,5 +32,5 @@ public class DatabaseItemDataService : IDatabaseItemDataService
 		var iconUrl = item.displayProperties.hasIcon ? item.displayProperties.icon : "";
 		var fullUrl = $"{_baseUrl}{iconUrl}";
 		return fullUrl;
-	}
+	}	
 }

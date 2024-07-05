@@ -21,6 +21,8 @@ public class Startup
 		services.AddTransient<IEquipmentService, EquipmentService>();
 		services.AddTransient<IDestinyManifectService, DestinyManifectService>();
         services.AddScoped<IDatabaseItemDataService, DatabaseItemDataService>();
+        services.AddScoped<IProfileVaultService, ProfileVaultService>();
+        services.AddScoped<IItemInstanceService, ItemInstanceService>();
 		services.AddControllers();
 
 		services.AddCors(options =>
