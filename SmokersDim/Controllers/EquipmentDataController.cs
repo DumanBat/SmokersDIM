@@ -11,12 +11,14 @@ public class CharacterItemDataController : ControllerBase
 	private readonly IHttpContextAccessor _httpContextAccessor;
 	private readonly ILogger<CharacterItemDataController> _logger;
 	private readonly IItemInstanceService _itemInstanceService;
+	private readonly IDatabaseItemDataService _databaseItemDataService;
 
-	public CharacterItemDataController(IEquipmentService equipmentService, IHttpContextAccessor httpContextAccessor, ILogger<CharacterItemDataController> logger, IItemInstanceService itemInstanceService)
+	public CharacterItemDataController(IEquipmentService equipmentService, IHttpContextAccessor httpContextAccessor, ILogger<CharacterItemDataController> logger, IItemInstanceService itemInstanceService, IDatabaseItemDataService databaseItemDataService)
 	{
 		_equipmentService = equipmentService;
 		_httpContextAccessor = httpContextAccessor;
 		_itemInstanceService = itemInstanceService;
+		_databaseItemDataService = databaseItemDataService;
 		_logger = logger;
 	}	
 	
@@ -36,16 +38,11 @@ public class CharacterItemDataController : ControllerBase
 	}
 	
 	[HttpGet("get-item-instance")]
-	public async Task<IActionResult> GetItemInstance([FromQuery] string itemInstanceHash)
+	public async Task<IActionResult> GetItemInstance([FromQuery] string itemHash, [FromQuery] string itemInstanceHash)//and here itemHash
 	{
 		var itemInstance = await _itemInstanceService.GetItemInstanceData(itemInstanceHash);
-		// var jsonSerializerSettings = new JsonSerializerSettings
-		// {
-		// 	ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-		// 	ContractResolver = new CamelCasePropertyNamesContractResolver()
-		// };
-
-		//var itemInstanceJson = JsonConvert.SerializeObject(itemInstance, jsonSerializerSettings);
+		var parsedItemHash = uint.Parse(itemHash); 
+		itemInstance.displayProperties = await _databaseItemDataService.GetItemDisplayProperties(parsedItemHash);
 		var itemInstanceJson = JsonConvert.SerializeObject(itemInstance);
 
 		if (!string.IsNullOrEmpty(itemInstanceJson))

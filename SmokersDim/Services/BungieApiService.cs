@@ -93,7 +93,7 @@ public class BungieApiService : IBungieApiService
 
 	public async Task<string> GetItemInstance(string membershipType, string membershipId, string itemInstanceHash)
 	{
-		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Item/{itemInstanceHash}/?components=300,302,304";
+		var url = $"{_basePlatformUrl}/Destiny2/{membershipType}/Profile/{membershipId}/Item/{itemInstanceHash}/?components=300,302,304,307";
 		_logger.LogInformation("Requesting Item Instance Data from URL: {Url}", url);
 
 		return await SendRequestAsync(url);

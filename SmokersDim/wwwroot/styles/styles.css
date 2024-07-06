@@ -164,3 +164,55 @@ pre {
     text-decoration: none;
     cursor: pointer;
 }
+
+.popup-content h2 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.stats, .perks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stats div, .perks div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.stat-name {
+    width: 80px;
+    text-align: left;
+}
+
+.stat-value {
+    width: 30px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #444;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.stat-bar div {
+    height: 100%;
+    background-color: #007bff;
+}
+
+.stat-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #007bff;
+}
